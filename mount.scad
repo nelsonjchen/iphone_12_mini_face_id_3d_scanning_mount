@@ -10,7 +10,7 @@ module iphone_ref() {
 module mirror_cutout() {
   mirror_w = 70.0;
   mirror_th = 1; // Slightly thicker for slot ease
-  tolerance = 0.5;
+  tolerance = 0.3;
   slot_w = mirror_th + tolerance;
 
   // Pillars to hold the mirror
@@ -41,6 +41,11 @@ difference() {
       // Extended back (-X) to support the shifted pillars
       translate([0, 0, -5])
         cube([20, 75, 14], center=true);
+      // support the mirror
+
+      rotate([0, -45, 0])
+        translate([-1, 0, 0])
+          cube([8, 75, 15], center=true);
     }
   }
 
