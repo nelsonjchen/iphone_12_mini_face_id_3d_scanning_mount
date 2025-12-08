@@ -5,7 +5,7 @@
 // Mirror Dimensions
 mirror_w = 70.0;
 mirror_th = 1; // Slightly thicker for slot ease
-tolerance = 0.3;
+tolerance = 0.5;
 slot_w = mirror_th + tolerance;
 slot_height = 75;
 
@@ -19,7 +19,7 @@ mount_angle = 45;
 // Cutout Dimensions
 face_id_cut_w = 30;
 face_id_cut_h = 30;
-face_id_cut_d = 55;
+face_id_cut_d = 60;
 
 // -----------------------------------------------------------------------------
 // Modules
