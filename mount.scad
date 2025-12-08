@@ -8,5 +8,5 @@ color("skyblue")
 // Orange, transparent
 // Rotated -90 on X based on previous preview.scad hints to make it lay flat
 %color("orange", 0.5)
-  rotate([-90, 0, 0])
+  rotate([0, 90, 0])
     import("reference/iphone-12-mini.stl");
