@@ -10,7 +10,7 @@ module iphone_ref() {
 module mirror_cutout() {
   mirror_w = 70.0;
   mirror_th = 1; // Slightly thicker for slot ease
-  tolerance = 0.;
+  tolerance = 0.5;
   slot_w = mirror_th + tolerance;
 
   // Pillars to hold the mirror
@@ -79,6 +79,6 @@ difference() {
 // 70x70mm
 // Placed IN the slot position to visualize
 %color("silver")
-  translate([-24.75, 0, 24.75]) // Center offset for bottom at 0,0
+  translate([-(70 - 1) * sin(45) / 2, 0, (70 + 1) * sin(45) / 2]) // Center offset for bottom at 0,00
     rotate([0, -45, 0])
       cube([1, 70.0, 70.0], center=true);
