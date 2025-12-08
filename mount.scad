@@ -10,6 +10,8 @@ slot_w = mirror_th + tolerance;
 slot_height = 75;
 
 // Mount Geometry
+mount_width = 68;
+mount_thickness = 20;
 pillar_w = 5; // Width of the side walls
 separation = mirror_w + tolerance; // Separation between pillars
 mount_angle = 45;
@@ -34,12 +36,12 @@ module mount_base() {
       // Base - Widened for 70mm mirror
       // Extended back (-X) to support the shifted pillars
       translate([0, 0, -5])
-        cube([20, 75, 14], center=true);
+        cube([mount_thickness, mount_width, 14], center=true);
 
       // Angled support for the mirror
       rotate([0, -mount_angle, 0])
         translate([-1, 0, 0])
-          cube([8, 75, 15], center=true);
+          cube([8, mount_width, 15], center=true);
     }
   }
 }
