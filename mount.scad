@@ -1,58 +1,61 @@
-// Simplified Mount View
+// -----------------------------------------------------------------------------
+// Parameters
+// -----------------------------------------------------------------------------
 
-// 1. The "Mount" (Just a cube for now)
+// Mirror Dimensions
+mirror_w = 70.0;
+mirror_th = 1; // Slightly thicker for slot ease
+tolerance = 0.3;
+slot_w = mirror_th + tolerance;
+slot_height = 75;
+
+// Mount Geometry
+pillar_w = 5; // Width of the side walls
+separation = mirror_w + tolerance; // Separation between pillars
+mount_angle = 45;
+
+// Cutout Dimensions
+face_id_cut_w = 30;
+face_id_cut_h = 30;
+face_id_cut_d = 55;
+
+// -----------------------------------------------------------------------------
+// Modules
+// -----------------------------------------------------------------------------
+
 module iphone_ref() {
   rotate([0, 90, 0])
     import("reference/iphone-12-mini.stl");
 }
 
-// 1. The "Mount" (Just a cube for now)
-module mirror_cutout() {
-  mirror_w = 70.0;
-  mirror_th = 1; // Slightly thicker for slot ease
-  tolerance = 0.3;
-  slot_w = mirror_th + tolerance;
-
-  // Pillars to hold the mirror
-  pillar_w = 5; // Width of the side walls
-
-  // Separation between pillars (Mirror width + tolerance)
-  separation = mirror_w + tolerance;
-
-  // The Slot Cut
-  // 45 degree angle for the mirror
-  slot_height = 75;
-
-  // Calculate offsets to place the bottom corner at [0,0,0]
-  // Rotated -45 deg: z_min is at local x=-w/2, z=-h/2
-  z_offset = (slot_height + slot_w) * sin(45) / 2;
-  x_offset = (slot_height - slot_w) * sin(45) / 2;
-
-  translate([-x_offset, 0, z_offset])
-    rotate([0, -45, 0])
-      cube([slot_w, separation * 2 + 2, slot_height], center=true);
-}
-
-// 1. The "Mount" (Just a cube for now)
-difference() {
+module mount_base() {
   color("skyblue") {
     union() {
       // Base - Widened for 70mm mirror
       // Extended back (-X) to support the shifted pillars
       translate([0, 0, -5])
         cube([20, 75, 14], center=true);
-      // support the mirror
 
-      rotate([0, -45, 0])
+      // Angled support for the mirror
+      rotate([0, -mount_angle, 0])
         translate([-1, 0, 0])
           cube([8, 75, 15], center=true);
     }
   }
+}
 
-  // Global Mirror Cutout
-  mirror_cutout();
+module mirror_cutout() {
+  // Calculate offsets to place the bottom corner at [0,0,0]
+  // Rotated -45 deg: z_min is at local x=-w/2, z=-h/2
+  z_offset = (slot_height + slot_w) * sin(mount_angle) / 2;
+  x_offset = (slot_height - slot_w) * sin(mount_angle) / 2;
 
-  // Profile Cutout
+  translate([-x_offset, 0, z_offset])
+    rotate([0, -mount_angle, 0])
+      cube([slot_w, separation * 2 + 2, slot_height], center=true);
+}
+
+module profile_cutter() {
   // Projects the phone's X-axis profile and extrudes it to create a cutter
   translate([0, 0, 0])
     rotate([0, -90, 0]) // Rotate back to X axis alignment
@@ -60,30 +63,56 @@ difference() {
         projection(cut=false)
           rotate([0, 90, 0]) // Rotate to Z for projection (captures X profile)
             iphone_ref();
+}
 
-  // Face ID Clearance Cut
+module face_id_cutter() {
   // Removing more material to ensure clear view
   // 18mm wide (leaving 1mm walls on 20mm mount)
   // Deeper cut to verify clearance
   translate([0, 0, 10]) // Positioned to cut the top wall
-    cube([30, 55, 30], center=true);
+    cube([face_id_cut_w, face_id_cut_d, face_id_cut_h], center=true);
+}
 
-  // Bottom Cleaner Cut
+module bottom_cleaner() {
   // Slices off anything protruding below the base (Base bottom is at Z = -5 - 7.5 = -12.5)
   translate([0, 0, -50 - 12.5])
     cube([100, 100, 100], center=true);
 }
 
-// 2. The iPhone 12 Mini Reference
+// -----------------------------------------------------------------------------
+// Main Assembly
+// -----------------------------------------------------------------------------
+
+difference() {
+  mount_base();
+
+  mirror_cutout();
+  profile_cutter();
+  face_id_cutter();
+  bottom_cleaner();
+}
+
+// -----------------------------------------------------------------------------
+// Visual References (Not part of the physical model)
+// -----------------------------------------------------------------------------
+
+// iPhone 12 Mini Reference
 // Orange, transparent
 // Rotated -90 on X based on previous preview.scad hints to make it lay flat
 %color("orange", 0.5)
   iphone_ref();
 
-// 3. The Mirror (Visual only)
-// 70x70mm
+// Mirror (Visual only)
 // Placed IN the slot position to visualize
-%color("silver")
-  translate([-(70 - 1) * sin(45) / 2, 0, (70 + 1) * sin(45) / 2]) // Center offset for bottom at 0,00
-    rotate([0, -45, 0])
-      cube([1, 70.0, 70.0], center=true);
+%color("silver") {
+  z_offset_vis = (mirror_w + mirror_th) * sin(mount_angle) / 2;
+  // Note: This visual placement logic might need tweaking if the slot logic changes perfectly,
+  // but relying on the same math as the cutout usually works.
+  // The original generic offset was:
+  // translate([-(70 - 1) * sin(45) / 2, 0, (70 + 1) * sin(45) / 2])
+
+  // Adapted to variables:
+  translate([-(mirror_w - mirror_th) * sin(mount_angle) / 2, 0, (mirror_w + mirror_th) * sin(mount_angle) / 2])
+    rotate([0, -mount_angle, 0])
+      cube([mirror_th, mirror_w, mirror_w], center=true);
+}
