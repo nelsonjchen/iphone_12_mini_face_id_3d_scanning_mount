@@ -43,7 +43,7 @@ module mount_base() {
       // Angled support for the mirror, pushing up
       rotate([0, -mount_angle, 0])
         translate([-2, 0, 0])
-          cube([8, mount_width, 15], center=true);
+          cube([6, mount_width, 15], center=true);
       // Angled support for the mirror, pushing down
       rotate([0, -mount_angle, 0])
         translate([0, 0, 0])
