@@ -14,7 +14,7 @@ mirror_slot_thickness = mirror_thickness + mirror_tolerance;
 mirror_slot_length = mirror_width + mirror_length_tolerance;
 
 // Fit Dimensions
-phone_fit_tolerance = 0.5;
+phone_fit_tolerance = 0.25;
 
 // Mount Geometry
 mount_width = 80;
