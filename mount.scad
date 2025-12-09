@@ -12,24 +12,24 @@ mirror_thickness = 1.0;
 mirror_tolerance = 0.15;
 mirror_length_tolerance = 0.5;
 
-// Calculated Mirror Slot
+// -- Calculated Mirror Slot --
 mirror_slot_thickness = mirror_thickness + mirror_tolerance;
 mirror_slot_length = mirror_width + mirror_length_tolerance;
 mirror_slot_width = mirror_width + mirror_tolerance;
 
 // -- Mount Base Dimensions --
-base_height = 15; // Thickness of the base block (was 10, increased for stability)
+base_height = 15; // Thickness of the base block
 base_top_z = 2.5; // Top surface of the base relative to origin
 base_center_z = base_top_z - (base_height / 2);
+base_shift_x = -5; // Shift base back for better support of phone
+base_plate_thickness = 0.2; // Thickness of the hull plates (virtual)
 
 // -- Mount Dimensions --
 mount_corner_radius = 3;
 mount_wall_thickness = 2.4;
-// mount_width = 80; // Old width
 mirror_housing_width = mirror_width + (2 * mount_wall_thickness);
-mount_width = mirror_housing_width; // Matched to housing
-// Tapers the sides to reduce bulk
-// safe_y = max(mount_width, mirror_housing_width) / 2; // Was used for calculation
+mount_width = mirror_housing_width;
+mount_taper_reduction = 8; // Total width reduction at bottom of base
 mount_thickness = 20;
 mount_angle = 45;
 
@@ -44,7 +44,7 @@ face_id_cut_h = 30;
 face_id_cut_d = 60;
 
 // -----------------------------------------------------------------------------
-// 3. Helper Modules (Visuals & References)
+// 2. Helper Modules (Visuals & References)
 // -----------------------------------------------------------------------------
 
 module rounded_cube(size, r, center = true) {
@@ -104,16 +104,16 @@ module taper_mask() {
 
   hull() {
     // Bottom Plate (Narrow)
-    translate([-5, 0, base_top_z - base_height + 0.1])
-      rounded_cube([mask_len, mount_width - 8, 0.2], r=mount_corner_radius, center=true);
+    translate([base_shift_x, 0, base_top_z - base_height + (base_plate_thickness / 2)])
+      rounded_cube([mask_len, mount_width - mount_taper_reduction, base_plate_thickness], r=mount_corner_radius, center=true);
 
     // Top Plate (Wide)
-    translate([-5, 0, base_top_z - 0.1])
-      rounded_cube([mask_len, mount_width, 0.2], r=mount_corner_radius, center=true);
+    translate([base_shift_x, 0, base_top_z - (base_plate_thickness / 2)])
+      rounded_cube([mask_len, mount_width, base_plate_thickness], r=mount_corner_radius, center=true);
 
     // Sky Plate (Wide - extends up)
-    translate([-5, 0, 50])
-      rounded_cube([mask_len, mount_width, 0.2], r=mount_corner_radius, center=true);
+    translate([base_shift_x, 0, 50])
+      rounded_cube([mask_len, mount_width, base_plate_thickness], r=mount_corner_radius, center=true);
   }
 }
 
@@ -125,13 +125,12 @@ module mount_base() {
       // Tapered hull construction
       hull() {
         // Top plate (full width)
-        translate([-5, 0, base_top_z - 0.1])
-          rounded_cube([mount_thickness, mount_width, 0.2], r=mount_corner_radius, center=true);
+        translate([base_shift_x, 0, base_top_z - (base_plate_thickness / 2)])
+          rounded_cube([mount_thickness, mount_width, base_plate_thickness], r=mount_corner_radius, center=true);
 
         // Bottom plate (tapered width)
-        // Taper 15 degrees over 15mm height => ~4mm per side => 8mm total reduction
-        translate([-5, 0, base_top_z - base_height + 0.1])
-          rounded_cube([mount_thickness, mount_width - 8, 0.2], r=mount_corner_radius, center=true);
+        translate([base_shift_x, 0, base_top_z - base_height + (base_plate_thickness / 2)])
+          rounded_cube([mount_thickness, mount_width - mount_taper_reduction, base_plate_thickness], r=mount_corner_radius, center=true);
       }
 
       // Angled Mirror Support (Top side)
@@ -162,7 +161,8 @@ module top_guide() {
   // Adds a guide/stop for the top of the phone
 
   spine_width = 10;
-  base_Left_X = -15; // Corresponds to mount_base geometry
+  // Calculate left edge of base from its definition in mount_base
+  base_min_x = base_shift_x - (mount_thickness / 2);
 
   // Height Logic
   // Align bottom with base bottom
@@ -173,13 +173,13 @@ module top_guide() {
   g_center_z = g_top_z - (g_height / 2);
 
   // Only draw if guide extends beyond base
-  if (guide_offset > abs(base_Left_X)) {
+  if (guide_offset > abs(base_min_x)) {
     color("cornflowerblue")
       union() {
         // 1. Central Spine (Flared)
         hull() {
           // Base connection (Wide)
-          translate([(base_Left_X) / 2, 0, g_center_z])
+          translate([(base_min_x) / 2, 0, g_center_z])
             rounded_cube([0.1, 1, g_height], r=1, center=true);
 
           // Guide connection (Standard Width)
@@ -192,7 +192,7 @@ module top_guide() {
 
           // Let's be precise:
           // At Base (left side)
-          translate([base_Left_X + 0.1, 0, g_center_z])
+          translate([base_min_x + 0.1, 0, g_center_z])
             rounded_cube([0.1, 1, g_height], r=1, center=true);
 
           // At Guide (right side - connection point)
@@ -274,7 +274,9 @@ module face_id_cutter() {
 module sensor_patch() {
   // Clears material near the notch area
   patch_w = 40;
-  translate([-guide_offset + 10, 0, 0])
+  patch_offset_from_guide = 10;
+
+  translate([-guide_offset + patch_offset_from_guide, 0, 0])
     cube([18, patch_w, 18], center=true);
 }
 
@@ -284,7 +286,7 @@ module bottom_label() {
   // Text depth: 0.6mm, so we position it slightly above the bottom surface to engrave
   label_z = base_top_z - base_height - 0.01;
 
-  translate([-5, 0, label_z])
+  translate([base_shift_x, 0, label_z]) // Centered on base X
     rotate([0, 0, 90])
       mirror([1, 0, 0])
         linear_extrude(height=0.6) {
