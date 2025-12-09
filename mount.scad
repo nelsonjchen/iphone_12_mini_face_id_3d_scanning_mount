@@ -83,12 +83,6 @@ module face_id_cutter() {
     cube([face_id_cut_w, face_id_cut_d, face_id_cut_h], center=true);
 }
 
-module bottom_cleaner() {
-  // Slices off anything protruding below the base (Base bottom is at Z = -5 - 7.5 = -12.5)
-  translate([0, 0, -50 - 12.5])
-    cube([100, 100, 100], center=true);
-}
-
 module side_trimmer() {
   // Tapers the ends of the mount (Y-axis) to reduce bulk without cutting the mirror slot.
   // "Opposite" taper: Wide at the TOP, Narrow at the BOTTOM.
@@ -132,7 +126,6 @@ difference() {
   mirror_cutout();
   profile_cutter();
   face_id_cutter();
-  bottom_cleaner();
   side_trimmer();
 }
 
