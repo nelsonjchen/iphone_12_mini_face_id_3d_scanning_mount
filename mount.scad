@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------
 
 // -- Mirror Dimensions --
-mirror_width = 70.2;
+mirror_width = 75.2;
 mirror_thickness = 1.0;
 mirror_tolerance = 0.15;
 mirror_length_tolerance = 0.5;
