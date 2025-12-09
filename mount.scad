@@ -18,7 +18,7 @@ mirror_slot_length = mirror_width + mirror_length_tolerance;
 mirror_slot_width = mirror_width + mirror_tolerance;
 
 // -- Mount Base Dimensions --
-base_height = 13; // Thickness of the base block (was 10, increased for stability)
+base_height = 15; // Thickness of the base block (was 10, increased for stability)
 base_top_z = 2.5; // Top surface of the base relative to origin
 base_center_z = base_top_z - (base_height / 2);
 
@@ -28,7 +28,7 @@ mount_thickness = 20;
 mount_angle = 45;
 
 // -- Phone Fit & Alignment --
-phone_fit_tolerance = 0.25;
+phone_fit_tolerance = 0.3;
 guide_offset = 22; // Distance to the top of the phone guide
 iphone_top_ref_x = -14; // Natural top of phone in reference STL at X = -14
 
