@@ -13,10 +13,9 @@ slot_height = 75;
 phone_fit_tolerance = 0.5;
 
 // Mount Geometry
-mount_width = 68;
+mount_width = 74;
 mount_thickness = 20;
-pillar_w = 5; // Width of the side walls
-separation = mirror_w + tolerance; // Separation between pillars
+separation = mirror_w + tolerance;
 mount_angle = 45;
 
 // Cutout Dimensions
@@ -43,8 +42,8 @@ module mount_base() {
 
       // Angled support for the mirror, pushing up
       rotate([0, -mount_angle, 0])
-        translate([-3, 0, 0])
-          cube([7, mount_width, 15], center=true);
+        translate([-2, 0, 0])
+          cube([8, mount_width, 15], center=true);
       // Angled support for the mirror, pushing down
       rotate([0, -mount_angle, 0])
         translate([0, 0, 0])
@@ -61,7 +60,7 @@ module mirror_cutout() {
 
   translate([-x_offset, 0, z_offset])
     rotate([0, -mount_angle, 0])
-      cube([slot_w, separation * 2 + 2, slot_height], center=true);
+      cube([slot_w, separation, slot_height], center=true);
 }
 
 module profile_cutter() {
