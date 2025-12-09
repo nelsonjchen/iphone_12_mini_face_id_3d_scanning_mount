@@ -7,7 +7,7 @@
 mirror_width = 75.2;
 mirror_thickness = 1; // Slightly thicker for slot ease
 
-mirror_tolerance = 0.5;
+mirror_tolerance = 0.25;
 mirror_length_tolerance = 0.5;
 
 mirror_slot_thickness = mirror_thickness + mirror_tolerance;
@@ -52,10 +52,10 @@ module mount_base() {
       difference() {
         rotate([0, -mount_angle, 0])
           translate([0, 0, 0])
-            cube([4, mount_width, 5], center=true);
+            cube([5, mount_width, 15], center=true);
         rotate([0, -mount_angle, 0])
           translate([0, 0, 0])
-            cube([5, mount_width - 8, 5], center=true);
+            cube([5, mount_width - 8, 15], center=true);
       }
     }
   }
