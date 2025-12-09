@@ -27,7 +27,7 @@ preview_bottom.png: mount.scad
 
 preview_ortho.png: mount.scad
 	$(OPENSCAD) -o preview_ortho.png --autocenter --viewall --imgsize=1024,768 --projection=ortho \
-		--camera=0,0,0,63.435,0,45,100 mount.scad
+		--camera=0,0,0,63.435,0,225,100 mount.scad
 
 preview_ortho2.png: mount.scad
 	$(OPENSCAD) -o preview_ortho2.png --autocenter --viewall --imgsize=1024,768 --projection=ortho \
