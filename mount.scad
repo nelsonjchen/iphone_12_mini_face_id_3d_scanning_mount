@@ -106,7 +106,7 @@ module top_guide() {
   // Height Logic
   // Align bottom with base bottom
   base_bottom_z = base_top_z - base_height;
-  g_top_z = 0; // Keep top flush with phone surface (Z=0)
+  g_top_z = 2; // Keep top flush with phone surface (Z=0)
 
   g_height = g_top_z - base_bottom_z;
   g_center_z = g_top_z - (g_height / 2);
@@ -122,7 +122,7 @@ module top_guide() {
 
         // 2. Vertical Stop
         // Blocks the phone face
-        translate([-guide_offset - 1.5, 0, g_center_z])
+        translate([-guide_offset, 0, g_center_z])
           cube([3, spine_width, g_height], center=true);
       }
   }
@@ -213,7 +213,7 @@ module sensor_patch() {
   // Clears material near the notch area
   patch_w = 40;
   translate([-guide_offset + 5, 0, 0])
-    cube([10, patch_w, 10], center=true);
+    cube([8, patch_w, 18], center=true);
 }
 
 module bottom_label() {
