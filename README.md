@@ -1,5 +1,7 @@
 # iPhone 12 mini TrueDepth Periscopic Face ID 3D Scanning Mount
 
+![hero picture](hero.png)
+
 A 3D-printed mount to turn an iPhone 12 mini into a dedicated forward-facing Face ID scanner, designed for use with the [Heges 3D Scanner](https://hege.sh/) app.
 
 The iPhone 12 mini is an ideal candidate for this because it can often be found cheaply on the used market. Even units with battery damage, non-OEM screens, or cosmetic wear (like being "chewed on by a dog") are perfect, as long as the Face ID sensor is functional.
@@ -55,6 +57,8 @@ This project uses a `Makefile` to automate the generation of STL files and previ
 -   **Layer Height**: 0.16mm Standard @BBL
 -   **Variable Layer Height**: Enabled (Adaptive)
     -   When applying variable layer height, move the slider all the way to "Quality".
+
+This should result in a snug fit for the iPhone 12 Mini and the mirror.
 
 
 ## File Structure
