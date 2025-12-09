@@ -9,6 +9,9 @@ tolerance = 0.5;
 slot_w = mirror_th + tolerance;
 slot_height = 75;
 
+// Fit Dimensions
+phone_fit_tolerance = 0.5;
+
 // Mount Geometry
 mount_width = 68;
 mount_thickness = 20;
@@ -63,12 +66,14 @@ module mirror_cutout() {
 
 module profile_cutter() {
   // Projects the phone's X-axis profile and extrudes it to create a cutter
+  // Added offset for tolerance
   translate([0, 0, 0])
     rotate([0, -90, 0]) // Rotate back to X axis alignment
       linear_extrude(height=60, center=true)
-        projection(cut=false)
-          rotate([0, 90, 0]) // Rotate to Z for projection (captures X profile)
-            iphone_ref();
+        offset(delta=phone_fit_tolerance)
+          projection(cut=false)
+            rotate([0, 90, 0]) // Rotate to Z for projection (captures X profile)
+              iphone_ref();
 }
 
 module face_id_cutter() {
