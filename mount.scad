@@ -274,8 +274,8 @@ module face_id_cutter() {
 module sensor_patch() {
   // Clears material near the notch area
   patch_w = 40;
-  translate([-guide_offset + 5, 0, 0])
-    cube([8, patch_w, 18], center=true);
+  translate([-guide_offset + 10, 0, 0])
+    cube([18, patch_w, 18], center=true);
 }
 
 module bottom_label() {
