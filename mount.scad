@@ -139,7 +139,7 @@ module bottom_label() {
       mirror([1, 0, 0])
         linear_extrude(height=0.6) {
           translate([0, 3.5, 0])
-            text("iPhone 12 Mini", size=5, valign="center", halign="center");
+            text("iPhone 12 mini", size=5, valign="center", halign="center");
           translate([0, -3.5, 0])
             text("Face ID 3D Scan Mount", size=4.5, valign="center", halign="center");
         }
