@@ -11,6 +11,12 @@ The iPhone 12 mini is an ideal candidate for this because it can often be found 
 -   **Secure Fit**: Specifically designed for the iPhone 12 Mini form factor.
 -   **Face ID Clearance**: Includes a dedicated cutout to ensure the TrueDepth camera system has a clear view.
 
+## Hardware Needed
+
+-   [3x3 Inch Square Mirrors (this kit has more than that too)](https://amzn.to/4rF7oln)
+-   [iPhone 12 Mini (Amazon)](https://amzn.to/4aF0Vkh)
+    - Of course, you can get it from other places like eBay.
+
 ## Visuals
 
 | ISO View | Top View |
