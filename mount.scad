@@ -15,7 +15,7 @@ mirror_slot_length = mirror_width + mirror_length_tolerance;
 
 // Fit Dimensions
 phone_fit_tolerance = 0.25;
-guide_offset = 21.5; // Distance to the top of the phone guide
+guide_offset = 22; // Distance to the top of the phone guide
 
 // Mount Geometry
 mount_width = 80;
@@ -53,16 +53,16 @@ module mount_base() {
 
       // Angled support for the mirror, pushing up
       rotate([0, -mount_angle, 0])
-        translate([-2, 0, 0])
-          cube([6, mount_width, 15], center=true);
+        translate([-2, 0, 5])
+          cube([6, mount_width, 7], center=true);
       // Angled support for the mirror, pushing down
       difference() {
         rotate([0, -mount_angle, 0])
-          translate([0, 0, 0])
-            cube([5, mount_width, 15], center=true);
+          translate([0, 0, 5])
+            cube([5, mount_width, 7], center=true);
         rotate([0, -mount_angle, 0])
-          translate([0, 0, 0])
-            cube([5, mount_width - 8, 15], center=true);
+          translate([0, 0, 5])
+            cube([5, mount_width - 8, 7], center=true);
       }
     }
   }
@@ -77,7 +77,7 @@ module top_guide() {
   base_Left_X = -mount_thickness / 2; // -10
 
   // Height of the stop "finger"
-  stop_height = 20;
+  stop_height = 10;
 
   // only draw if sticking out
   if (guide_offset > abs(base_Left_X)) {
@@ -86,12 +86,12 @@ module top_guide() {
         // 1. The Central Spine ("Jut out the base")
         // Extends from base edge (-10) to guide_offset
         // Aligned with base Z (-5)
-        translate([(base_Left_X - guide_offset) / 2, 0, -5])
-          cube([guide_offset - abs(base_Left_X) + 0.1, spine_width, 14], center=true);
+        translate([-20, 0, -10])
+          cube([guide_offset - abs(base_Left_X) + 0.1, spine_width, 7], center=true);
 
         // 2. The Vertical Stop ("Straight up")
         // Positioned at the end, going up.
-        translate([-guide_offset - 1.5, 0, 0])
+        translate([-guide_offset - 1.5, 0, -5])
           cube([3, spine_width, stop_height], center=true);
       }
   }
@@ -173,10 +173,10 @@ difference() {
       profile_cutter();
     }
 
-    // Guide Logic: Subtract the phone 3D model directly
+    // Guide Logic: Subtract the phone 3D model with tolerance scale
     difference() {
       top_guide();
-      iphone_ref();
+      iphone_tolerance_cutter();
     }
   }
 
@@ -185,6 +185,40 @@ difference() {
   face_id_cutter();
   side_trimmer();
   bottom_label();
+}
+
+module iphone_tolerance_cutter() {
+  // Creates a slightly larger version of the iphone_ref for cutting
+  // Scaling is used to simulate tolerance since minkowski is too slow for STLs
+
+  // Measured Dimensions (approx)
+  p_len = 131.5; // Z in STL
+  p_wid = 65.2; // Y in STL
+  p_thk = 9.4; // X in STL
+
+  tol = phone_fit_tolerance;
+
+  // Scale factors for each original axis
+  s_len = (p_len + 2 * tol) / p_len;
+  s_wid = (p_wid + 2 * tol) / p_wid;
+  s_thk = (p_thk + 2 * tol) / p_thk;
+
+  // Center of the STL geometry (Local coords)
+  // X: 0 to 9.4 -> 4.7
+  // Y: -32.6 to 32.6 -> 0
+  // Z: -14 to 117.5 -> 51.75
+  c_x = 4.7;
+  c_y = 0;
+  c_z = 51.75;
+
+  shift_x = 14 - guide_offset;
+
+  translate([shift_x, 0, 0])
+    rotate([0, 90, 0])
+      translate([c_x, c_y, c_z])
+        scale([s_thk, s_wid, s_len])
+          translate([-c_x, -c_y, -c_z])
+            import("reference/iphone-12-mini.stl");
 }
 
 module bottom_label() {
