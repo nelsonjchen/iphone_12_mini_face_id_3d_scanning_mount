@@ -106,7 +106,7 @@ module top_guide() {
   // Height Logic
   // Align bottom with base bottom
   base_bottom_z = base_top_z - base_height;
-  g_top_z = 2; // Keep top flush with phone surface (Z=0)
+  g_top_z = 1; // Keep top flush with phone surface (Z=0)
 
   g_height = g_top_z - base_bottom_z;
   g_center_z = g_top_z - (g_height / 2);
