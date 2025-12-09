@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------
 
 // -- Mirror Dimensions --
-mirror_width = 75.2;
+mirror_width = 70.2;
 mirror_thickness = 1.0;
 mirror_tolerance = 0.15;
 mirror_length_tolerance = 0.5;
@@ -23,7 +23,9 @@ base_top_z = 2.5; // Top surface of the base relative to origin
 base_center_z = base_top_z - (base_height / 2);
 
 // -- Mount Dimensions --
+mount_wall_thickness = 2.4;
 mount_width = 80;
+mirror_housing_width = mirror_width + (2 * mount_wall_thickness);
 mount_thickness = 20;
 mount_angle = 45;
 
@@ -82,16 +84,16 @@ module mount_base() {
       // Angled Mirror Support (Top side)
       rotate([0, -mount_angle, 0])
         translate([-2, 0, 5])
-          cube([6, mount_width, 7], center=true);
+          cube([6, mirror_housing_width, 7], center=true);
 
       // Angled Mirror Support (Bottom side - with cutout for lens clearance if needed)
       difference() {
         rotate([0, -mount_angle, 0])
           translate([0, 0, 4])
-            cube([5, mount_width, 9], center=true);
+            cube([5, mirror_housing_width, 9], center=true);
         rotate([0, -mount_angle, 0])
           translate([0, 0, 5])
-            cube([5+1, mount_width - 8, 7+1], center=true);
+            cube([5 + 1, mirror_housing_width - 8, 7 + 1], center=true);
       }
     }
   }
@@ -188,12 +190,12 @@ module face_id_cutter() {
   // Clears view for Face ID sensors
   // +1 for z-fighting
   translate([0, 0, 10])
-    cube([face_id_cut_w+ 1, face_id_cut_d, face_id_cut_h], center=true);
+    cube([face_id_cut_w + 1, face_id_cut_d, face_id_cut_h], center=true);
 }
 
 module side_trimmer() {
   // Tapers the sides to reduce bulk
-  safe_y = 40;
+  safe_y = max(mount_width, mirror_housing_width) / 2;
   angle = 15;
   pivot_z = 0;
 
