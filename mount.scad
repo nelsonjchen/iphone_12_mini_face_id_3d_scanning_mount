@@ -226,10 +226,12 @@ module bottom_label() {
     rotate([0, 0, 90])
       mirror([1, 0, 0])
         linear_extrude(height=0.6) {
-          translate([0, 3.5, 0])
+          translate([0, 6, 0])
             text("iPhone 12 mini", size=5, valign="center", halign="center");
-          translate([0, -3.5, 0])
+          translate([0, 0, 0])
             text("Face ID 3D Scan Mount", size=4.5, valign="center", halign="center");
+          translate([0, -6, 0])
+            text(str("P Tol: ", phone_fit_tolerance, "mm | M Tol: ", mirror_tolerance, "mm"), size=3.5, valign="center", halign="center");
         }
 }
 
