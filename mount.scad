@@ -3,11 +3,11 @@
 // -----------------------------------------------------------------------------
 
 // Mirror Dimensions
-mirror_w = 70.0;
-mirror_th = 1; // Slightly thicker for slot ease
+mirror_width = 70.0;
+mirror_thickness = 1; // Slightly thicker for slot ease
 tolerance = 0.5;
-slot_w = mirror_th + tolerance;
-slot_height = 75;
+mirror_slot_thickness = mirror_thickness + tolerance;
+mirror_slot_length = 75;
 
 // Fit Dimensions
 phone_fit_tolerance = 0.5;
@@ -15,7 +15,7 @@ phone_fit_tolerance = 0.5;
 // Mount Geometry
 mount_width = 74;
 mount_thickness = 20;
-mirror_slot_width = mirror_w + tolerance;
+mirror_slot_width = mirror_width + tolerance;
 mount_angle = 45;
 
 // Cutout Dimensions
@@ -55,12 +55,12 @@ module mount_base() {
 module mirror_cutout() {
   // Calculate offsets to place the bottom corner at [0,0,0]
   // Rotated -45 deg: z_min is at local x=-w/2, z=-h/2
-  z_offset = (slot_height + slot_w) * sin(mount_angle) / 2;
-  x_offset = (slot_height - slot_w) * sin(mount_angle) / 2;
+  z_offset = (mirror_slot_length + mirror_slot_thickness) * sin(mount_angle) / 2;
+  x_offset = (mirror_slot_length - mirror_slot_thickness) * sin(mount_angle) / 2;
 
   translate([-x_offset, 0, z_offset])
     rotate([0, -mount_angle, 0])
-      cube([slot_w, mirror_slot_width, slot_height], center=true);
+      cube([mirror_slot_thickness, mirror_slot_width, mirror_slot_length], center=true);
 }
 
 module profile_cutter() {
@@ -158,14 +158,14 @@ module bottom_label() {
 // Mirror (Visual only)
 // Placed IN the slot position to visualize
 %color("silver") {
-  z_offset_vis = (mirror_w + mirror_th) * sin(mount_angle) / 2;
+  z_offset_vis = (mirror_width + mirror_thickness) * sin(mount_angle) / 2;
   // Note: This visual placement logic might need tweaking if the slot logic changes perfectly,
   // but relying on the same math as the cutout usually works.
   // The original generic offset was:
   // translate([-(70 - 1) * sin(45) / 2, 0, (70 + 1) * sin(45) / 2])
 
   // Adapted to variables:
-  translate([-(mirror_w - mirror_th) * sin(mount_angle) / 2, 0, (mirror_w + mirror_th) * sin(mount_angle) / 2])
+  translate([-(mirror_width - mirror_thickness) * sin(mount_angle) / 2, 0, (mirror_width + mirror_thickness) * sin(mount_angle) / 2])
     rotate([0, -mount_angle, 0])
-      cube([mirror_th, mirror_w, mirror_w], center=true);
+      cube([mirror_thickness, mirror_width, mirror_width], center=true);
 }
