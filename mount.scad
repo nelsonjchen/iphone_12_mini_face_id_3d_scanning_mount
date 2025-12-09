@@ -73,26 +73,34 @@ module top_guide() {
   // Central spine extending from the mount base to the stopper (Negative X direction)
   // "Jut out the base" along the center, then "straight up"
 
-  spine_width = 20;
-  base_Left_X = -mount_thickness / 2; // -10
+  spine_width = 10;
+  // Mount base is translate([-5, 0, -5]) cube([20...]) -> X range [-15, 5]
+  base_Left_X = -15;
 
-  // Height of the stop "finger"
-  stop_height = 10;
+  // Height Logic:
+  // Base Bottom: -12.5
+  // Phone Top: 0
+  // Target: Guide extends from -12.5 to 0. 
+  // Height = 12.5. Center = -6.25.
+
+  g_height = 12.5;
+  g_center_z = -6.25;
 
   // only draw if sticking out
   if (guide_offset > abs(base_Left_X)) {
     color("cornflowerblue")
       union() {
         // 1. The Central Spine ("Jut out the base")
-        // Extends from base edge (-10) to guide_offset
-        // Aligned with base Z (-5)
-        translate([-20, 0, -10])
-          cube([guide_offset - abs(base_Left_X) + 0.1, spine_width, 7], center=true);
+        // Extends from base edge (-15) to guide_offset
+        // Aligned with Z range [-12.5, 0]
+        translate([(base_Left_X - guide_offset) / 2, 0, g_center_z])
+          cube([guide_offset - abs(base_Left_X) + 0.1, spine_width, g_height], center=true);
 
         // 2. The Vertical Stop ("Straight up")
-        // Positioned at the end, going up.
-        translate([-guide_offset - 1.5, 0, -5])
-          cube([3, spine_width, stop_height], center=true);
+        // Stays within the Z limit (0) to match "cut off anything above z=0"
+        // But ensures it blocks the phone face (Z -9.4 to 0)
+        translate([-guide_offset - 1.5, 0, g_center_z])
+          cube([3, spine_width, g_height], center=true);
       }
   }
 }
@@ -177,6 +185,7 @@ difference() {
     difference() {
       top_guide();
       iphone_tolerance_cutter();
+      sensor_patch();
     }
   }
 
@@ -219,6 +228,18 @@ module iphone_tolerance_cutter() {
         scale([s_thk, s_wid, s_len])
           translate([-c_x, -c_y, -c_z])
             import("reference/iphone-12-mini.stl");
+}
+
+module sensor_patch() {
+  // Removes any material that "leaks" into the notch area
+  // (i.e. where the phone has a void, so the subtraction doesn't remove the guide material)
+  // Located centered on Y, near the top edge X.
+
+  // Notch width approx 35mm.
+  patch_w = 40;
+
+  translate([-guide_offset + 5, 0, 0]) // Start at guide offset and cut inwards (+X)
+    cube([10, patch_w, 10], center=true);
 }
 
 module bottom_label() {
