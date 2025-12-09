@@ -15,7 +15,7 @@ mirror_slot_length = mirror_width + mirror_length_tolerance;
 
 // Fit Dimensions
 phone_fit_tolerance = 0.25;
-guide_offset = 25; // Distance to the top of the phone guide
+guide_offset = 20; // Distance to the top of the phone guide
 
 // Mount Geometry
 mount_width = 80;
@@ -33,8 +33,14 @@ face_id_cut_d = 60;
 // -----------------------------------------------------------------------------
 
 module iphone_ref() {
-  rotate([0, 90, 0])
-    import("reference/iphone-12-mini.stl");
+  // Natural top of phone is at X = -14
+  // We want top of phone to be at X = -guide_offset
+  // Shift = (-guide_offset) - (-14) = 14 - guide_offset
+  shift_x = 14 - guide_offset;
+
+  translate([shift_x, 0, 0])
+    rotate([0, 90, 0])
+      import("reference/iphone-12-mini.stl");
 }
 
 module mount_base() {
