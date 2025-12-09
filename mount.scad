@@ -176,15 +176,34 @@ module top_guide() {
   if (guide_offset > abs(base_Left_X)) {
     color("cornflowerblue")
       union() {
-        // 1. Central Spine
-        // Extends from base edge to guide_offset
-        translate([(base_Left_X - guide_offset) / 2, 0, g_center_z])
-          cube([guide_offset - abs(base_Left_X) + 0.1, spine_width, g_height], center=true);
+        // 1. Central Spine (Flared)
+        hull() {
+          // Base connection (Wide)
+          translate([(base_Left_X) / 2, 0, g_center_z])
+            rounded_cube([0.1, 1, g_height], r=1, center=true);
+
+          // Guide connection (Standard Width)
+          translate([( -guide_offset) / 2, 0, g_center_z])
+            rounded_cube([0.1, 1, g_height], r=1, center=true);
+
+          // Main body filler (optional, but ensures hull covers length)
+          // Actually, just hulling the two ends (Base X and Guide X) works perfectly 
+          // to create a linear taper.
+
+          // Let's be precise:
+          // At Base (left side)
+          translate([base_Left_X + 0.1, 0, g_center_z])
+            rounded_cube([0.1, 1, g_height], r=1, center=true);
+
+          // At Guide (right side - connection point)
+          translate([-guide_offset + 1, 0, g_center_z])
+            rounded_cube([0.1, 1, g_height], r=1, center=true);
+        }
 
         // 2. Vertical Stop
         // Blocks the phone face
         translate([-guide_offset, 0, g_center_z])
-          cube([3, spine_width, g_height], center=true);
+          rounded_cube([3, spine_width, g_height], r=0.5, center=true);
       }
   }
 }
