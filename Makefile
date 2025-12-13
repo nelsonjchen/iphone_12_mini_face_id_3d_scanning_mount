@@ -4,6 +4,10 @@ all: stl previews
 
 stl: mount.stl
 
+mount.stl: mount.scad
+	$(OPENSCAD) -o mount.stl -D 'show_phone_ref=false' -D 'show_usage_mirror=false' -D 'show_storage_mirror=false' mount.scad
+
+
 previews: preview_usage_ortho.png preview_usage_side.png preview_storage_ortho.png preview_storage_side.png
 
 clean:

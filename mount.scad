@@ -85,14 +85,16 @@ module iphone_ref() {
       import("reference/iphone-12-mini.stl");
 }
 
+// -- Visual Geometry --
 module visual_references() {
-  // iPhone 12 Mini Reference (Orange, transparent)
+  // iPhone 12 Mini Reference (Blue, transparent - Mockup)
   if (show_phone_ref) {
-    %color("orange", 0.5)
+    color("DodgerBlue", 0.4)
       iphone_ref();
   }
 
   // Mirror Reference (Silver, visual only)
+
   if (show_usage_mirror) {
     %color("silver") {
       // Calculate visual position (same logic as cutout)
