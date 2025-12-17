@@ -4,11 +4,11 @@
 ![iPhone 12 Mini Face ID Mount Storage](hero_storage.png)
 
 
-A 3D-printed mount to turn an iPhone 12 mini into a dedicated forward-facing Face ID scanner, designed for use with the [Heges 3D Scanner](https://hege.sh/) app.
+A 3D-printed mount to turn an iPhone 12 mini into a dedicated forward-facing Face ID scanner, designed for use with the [Heges 3D Scanner](https://hege.sh/) app. [EM3D Scanner App](https://em3dscanningapp.com/) might also be a good alternative too as it has a decent trial but I haven't tried it yet.
 
 The iPhone 12 mini is an ideal candidate for this because it can often be found cheaply on the used market. Even units with battery damage, non-OEM screens, or cosmetic wear (like being "chewed on by a dog") are perfect, as long as the Face ID sensor is functional.
 
-Real world though? Good for a snapshot or two after a bit. Large flat surfaces can show bends. But the sensors on the iPhone 12 mini seem to bug out. Not sure if it's due to my crap-condition iPhone 12 mini's battery bugging out and heating things to madness and so on. Don't be expecting to scan some engines or whatevers with this. Get a real scanner. This is for small things and poor budgets and/or drawer phones you might already have.
+Real world though? Good for a snapshot or two after a bit. Large flat surfaces can show bends. But the sensors on the iPhone 12 mini seem to bug out. Not sure if it's due to my crap-condition iPhone 12 mini's battery bugging out and heating things to madness and so on. Don't be expecting to scan some engines or whatevers with this. Get a real scanner. This is for small things and poor budgets and/or drawer phones you might already have. 
 
 ## Features
 
